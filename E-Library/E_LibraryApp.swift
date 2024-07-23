@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import RiveRuntime
 
 @main
 struct E_LibraryApp: App {
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            ContentView()
         }
     }
 }

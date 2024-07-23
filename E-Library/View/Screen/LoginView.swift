@@ -10,8 +10,7 @@ import RiveRuntime
 
 struct LoginView: View {
     let button = RiveViewModel(fileName: "button")
-    @State var showModel = false
-    //@Binding var show: Bool
+    @State var showModal = false
     
     var background: some View {
         RiveViewModel(fileName: "shapes").view()
@@ -29,19 +28,19 @@ struct LoginView: View {
             background
             
             Color("Shadow").ignoresSafeArea()
-                .opacity(showModel ? 0.4 : 0)
+                .opacity(showModal ? 0.4 : 0)
             
             content
-                .offset(y: showModel ? -50 : 0)
+                .offset(y: showModal ? -50 : 0)
             
-            if showModel {
-                SignInView(show: $showModel)
-                    .opacity(showModel ? 1 : 0)
-                    .offset(y: showModel ? 0 : 300)
+            if showModal {
+                SignInView(show: $showModal)
+                    .opacity(showModal ? 1 : 0)
+                    .offset(y: showModal ? 0 : 300)
                     .overlay(
                         Button {
                             withAnimation(.spring()) {
-                                showModel.toggle()
+                                showModal.toggle()
                             }
                         } label: {
                             Image(systemName: "xmark")
@@ -51,8 +50,8 @@ struct LoginView: View {
                                 .mask(Circle())
                                 .shadow(color: Color("Shadow").opacity(0.3), radius: 5, x: 0, y: 3)
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                        .offset(y: showModel ? 0 : 200)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                            .offset(y: showModal ? 0 : 200)
                     )
                     .transition(.opacity.combined(with: .move(edge: .top)))
                     .zIndex(1)
@@ -61,11 +60,10 @@ struct LoginView: View {
         }
     }
     
-    
     var content: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text("Explore Your E-Library")
-                .font(.custom("Poppins Bold", size: 60 ))
+                .font(.custom("Poppins Bold", size: 65))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Text("Immerse yourself in a vast library of over 1000 books across diverse genres and topics. Discover captivating stories, expand your knowledge, and fuel your intellectual curiosity.")
@@ -93,7 +91,7 @@ struct LoginView: View {
                     button.play(animationName: "active")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                         withAnimation(.spring()) {
-                            showModel.toggle()
+                            showModal.toggle()
                         }
                     }
                 }

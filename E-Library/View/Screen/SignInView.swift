@@ -13,8 +13,37 @@ struct SignInView: View {
     @State var password = ""
     @Binding var show: Bool
     @State var isLoading = false
+    @State var navigateToHome = false
     let confetti = RiveViewModel(fileName: "confetti", stateMachineName: "State Machine 1")
+    
     let check = RiveViewModel(fileName: "check", stateMachineName: "State Machine 1")
+    
+    func logIn() {
+        isLoading = true
+        if email != "" {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                check.triggerInput("Check")
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                confetti.triggerInput("Trigger explosion")
+                withAnimation {
+                    isLoading = false
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                withAnimation {
+                    navigateToHome = true
+                }
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                check.triggerInput("Error")
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                isLoading = false
+            }
+        }
+    }
     
     var body: some View {
         VStack(spacing: 25) {
@@ -39,16 +68,19 @@ struct SignInView: View {
                 SecureField("", text: $password)
                     .customTextField(iconImage: Image("Icon Lock"))
             }
-            
-            Label("Sign In", systemImage: "arrow.right")
-                .customFont(.headline)
-                .padding(20)
-                .frame(maxWidth: .infinity)
-                .background(Color(hex: "F77D8E"))
-                .foregroundColor(.white)
-                .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])
-                .cornerRadius(8, corners: [.topLeft])
-                .shadow(color: Color(hex: "F77D8E").opacity(0.5), radius: 10, x: 0, y:10)
+            Button {
+                logIn()
+            } label: {
+                Label("Sign In", systemImage: "arrow.right")
+                    .customFont(.headline)
+                    .padding(20)
+                    .frame(maxWidth: .infinity)
+                    .background(Color(hex: "F77D8E"))
+                    .foregroundColor(.white)
+                    .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])
+                    .cornerRadius(8, corners: [.topLeft])
+                    .shadow(color: Color(hex: "F77D8E").opacity(0.5), radius: 10, x: 0, y:10)
+            }
             
             HStack {
                 Rectangle()
@@ -76,13 +108,12 @@ struct SignInView: View {
         }
         .padding(20)
         .background(.regularMaterial)
-        .mask(RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: .continuous))
-        .shadow(color: Color("Shadow").opacity(0.3 ), radius: 5, x: 0, y: 3)
+        .mask(RoundedRectangle(cornerRadius: 25.0, style: .continuous))
+        .shadow(color: Color("Shadow").opacity(0.3), radius: 5, x: 0, y: 3)
         .shadow(color: Color("Shadow").opacity(0.3), radius: 30, x: 0, y: 30)
         .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(.linearGradient(colors: [.white.opacity(0.8), .white.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing
-                                       ))
+                .stroke(.linearGradient(colors: [.white.opacity(0.8), .white.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing))
         )
         .overlay(
             ZStack {
@@ -97,6 +128,9 @@ struct SignInView: View {
             }
         )
         .padding()
+        .fullScreenCover(isPresented: $navigateToHome) {
+            HomeView()
+        }
     }
 }
 

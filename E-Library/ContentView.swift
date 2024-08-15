@@ -25,8 +25,8 @@ struct ContentView: View {
                 .ignoresSafeArea(.all, edges: .top)
 
             if isOpen {
-                CategoryView()
-                    .categoryViewModifiers(isOpen, show)
+                HomeView()
+                    .homeViewModifiers(isOpen, show)
             } else {
                 HomeView()
                     .homeViewModifiers(isOpen, show)
@@ -103,9 +103,9 @@ extension View {
         self
             .safeAreaInset(edge: .bottom) { Color.clear.frame(height: 80) }
             .safeAreaInset(edge: .top) { Color.clear.frame(height: 104) }
-            .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
-            .rotation3DEffect(.degrees(isOpen ? 30 : 0), axis: (x: 0, y: -1, z: 0), perspective: 1)
-            .offset(x: isOpen ? 265 : 0)
+            .mask(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .rotation3DEffect(.degrees(isOpen ? 10 : 0), axis: (x: 0, y: -1, z: 0), perspective: 1)
+            .offset(x: isOpen ? 85 : 0)
             .scaleEffect(isOpen ? 0.9 : 1)
             .scaleEffect(show ? 0.92 : 1)
             .edgesIgnoringSafeArea(.bottom)

@@ -10,7 +10,7 @@ import RiveRuntime
 
 struct TabBar: View {
     @AppStorage("selectedTab") var selectedTab: Tab = .home
-    
+    @State private var isCameraPresent = false
     var body: some View {
         VStack {
             Spacer()
@@ -27,13 +27,13 @@ struct TabBar: View {
             .padding(.horizontal, 20)
             .background(
                 TabBarBackground()
-                    .fill(Color("Background 2"))
-                    .shadow(color: Color("Background 2").opacity(0.3), radius: 20, x: 50, y: 0)
+                    .fill(Color(.black))
+                    .shadow(color: Color(.black).opacity(0.3), radius: 10, x: 0, y: -10)
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: 0, style: .continuous)
-                    .stroke(.linearGradient(colors: [.white.opacity(0.5), .white.opacity(0)], startPoint: .top, endPoint: .bottom))
-            )
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 0, style: .continuous)
+//                    .stroke(.linearGradient(colors: [.white.opacity(0.5), .white.opacity(0)], startPoint: .top, endPoint: .bottom))
+//            )
             .overlay(middleButton, alignment: .top)
         }
         .edgesIgnoringSafeArea(.bottom) 
@@ -41,7 +41,8 @@ struct TabBar: View {
     
     var middleButton: some View {
         Button(action: {
-            //show camera
+            isCameraPresent = true
+            
         }) {
             Image(systemName: "qrcode.viewfinder")
                 .font(.system(size: 75))
@@ -52,6 +53,10 @@ struct TabBar: View {
                 .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
         }
         .offset(y: -30)
+        .fullScreenCover(isPresented: $isCameraPresent) {
+            ImagePicker(sourceType: .camera)
+                    .edgesIgnoringSafeArea(.all)
+                }
     }
     
     func tabButton(for tab: Tab, riveViewModel: RiveViewModel) -> some View {
@@ -72,65 +77,100 @@ struct TabBar: View {
     }
 }
 
+//struct TabBarBackground: Shape {
+//    func path(in rect: CGRect) -> Path {
+//        var path = Path()
+//        
+//        // dimensions
+//        let curveHeight: CGFloat = -90
+//        let curveWidth: CGFloat = 90
+//        let midX = rect.midX
+//        let cornerRadius: CGFloat = 50 // Adjust corner radius to 0 for sharp corners
+//        
+//        // top left corner
+//        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+//        
+//        // top curve
+//        path.addLine(to: CGPoint(x: midX - curveWidth / 2, y: rect.minY))
+//        path.addQuadCurve(to: CGPoint(x: midX + curveWidth / 2, y: rect.minY), control: CGPoint(x: midX, y: rect.minY - curveHeight))
+//        
+//        // top right corner
+//        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+//        
+//        // bottom right corner
+//        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+//     
+//        // bottom left corner
+//        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+//        
+//        return path
+//    }
+//}
+
 struct TabBarBackground: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
+
         // dimensions
         let curveHeight: CGFloat = -90
         let curveWidth: CGFloat = 90
         let midX = rect.midX
-        let cornerRadius: CGFloat = 50 // Adjust corner radius to 0 for sharp corners
-        
+        let cornerRadius: CGFloat = 50
+
         // top left corner
-        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
-        
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY + cornerRadius))
+        path.addArc(center: CGPoint(x: rect.minX + cornerRadius, y: rect.minY + cornerRadius), radius: cornerRadius, startAngle:
+ .radians(.pi), endAngle: .radians(3 * .pi / 2), clockwise: false)
+
         // top curve
         path.addLine(to: CGPoint(x: midX - curveWidth / 2, y: rect.minY))
         path.addQuadCurve(to: CGPoint(x: midX + curveWidth / 2, y: rect.minY), control: CGPoint(x: midX, y: rect.minY - curveHeight))
-        
+
         // top right corner
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY))
+        path.addArc(center: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY + cornerRadius), radius: cornerRadius, startAngle:
+ .radians(3 * .pi / 2), endAngle: .radians(0), clockwise: false)
         
         // bottom right corner
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-     
+
         // bottom left corner
         path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        
+
         return path
     }
 }
-/*struct TabBarBackground: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        
-        // dimensions
-        let curveHeight: CGFloat = -90
-        let curveWidth: CGFloat = 90
-        let midX = rect.midX
-        let cornerRadius: CGFloat = 10 // adjust corner radius
-        
-        // top left corner
-        path.move(to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY))
-        path.addArc(center: CGPoint(x: rect.minX + cornerRadius, y: rect.minY + cornerRadius), radius: cornerRadius, startAngle: .radians(-.pi / 2), endAngle: .radians(0), clockwise: false)
-        
-        // top curve
-        path.addLine(to: CGPoint(x: midX - curveWidth / 2, y: rect.minY))
-        path.addQuadCurve(to: CGPoint(x: midX + curveWidth / 2, y: rect.minY), control: CGPoint(x: midX, y: rect.minY - curveHeight))
-        
-        // top right corner
-        path.addArc(center: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY + cornerRadius), radius: cornerRadius, startAngle: .radians(0), endAngle: .radians(.pi / 2), clockwise: false)
-        
-        // bottom right corner
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
-     
-        // bottom left corner
-        path.addLine(to: CGPoint(x: rect.minX - cornerRadius, y: rect.maxY))
-        
-        return path
-    }
-}*/
+
+//struct TabBarBackground: Shape {
+//    func path(in rect: CGRect) -> Path {
+//        var path = Path()
+//        
+//        // dimensions
+//        let curveHeight: CGFloat = -90
+//        let curveWidth: CGFloat = 90
+//        let midX = rect.midX
+//        let cornerRadius: CGFloat = 10 // adjust corner radius
+//        
+//        // top left corner
+//        path.move(to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY))
+//        path.addArc(center: CGPoint(x: rect.minX + cornerRadius, y: rect.minY + cornerRadius), radius: cornerRadius, startAngle: .radians(-.pi / 2), endAngle: .radians(0), clockwise: false)
+//        
+//        // top curve
+//        path.addLine(to: CGPoint(x: midX - curveWidth / 2, y: rect.minY))
+//        path.addQuadCurve(to: CGPoint(x: midX + curveWidth / 2, y: rect.minY), control: CGPoint(x: midX, y: rect.minY - curveHeight))
+//        
+//        // top right corner
+//        path.addArc(center: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY + cornerRadius), radius: cornerRadius, startAngle: .radians(0), endAngle: .radians(.pi / 2), clockwise: false)
+//        
+//        // bottom right corner
+//        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
+//     
+//        // bottom left corner
+//        path.addLine(to: CGPoint(x: rect.minX - cornerRadius, y: rect.maxY))
+//        
+//        return path
+//    }
+//}
 
 
 struct TabBar_Previews: PreviewProvider {

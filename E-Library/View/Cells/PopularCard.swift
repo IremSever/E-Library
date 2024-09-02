@@ -21,7 +21,7 @@ struct PopularCard: View {
             
             VStack(alignment: .leading, spacing: 6) {
                 Spacer()
-    
+                
                 HStack {
                     ForEach(0..<5) { index in
                         Image(systemName: getStarType(for: index, rating: popular.star))
@@ -78,10 +78,10 @@ struct PopularCard: View {
         }
         
         .padding()
-                .background(.clear)
-                .cornerRadius(15)
-                .shadow(color: Color.gray.opacity(0.3), radius: 8, x: 0, y: 8)
-                .frame(width: 350, height: 200)
+        .background(.clear)
+        .cornerRadius(15)
+        .shadow(color: Color.gray.opacity(0.3), radius: 8, x: 0, y: 8)
+        .frame(width: 350, height: 200)
         
         
     }

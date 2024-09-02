@@ -18,9 +18,11 @@ struct Home: Identifiable {
 }
 
 var popular = [
-    Home(title: "We Loved It All : A Memory of Life", author: "Millet, Lydia", price: "$28.65$", star: 5, style: "Story", image: Image("We Loved It All")),
-    Home(title: "The Art of Eric Carle", author: "Marcus, Leonard S.", price: "$19.99", star: 4.8, style: "Life Style", image: Image("The Art of Eric Carle")),
-    Home(title: "Show Me a Story!", author: "Marcus, Leonard S., Wiesner, David", price: "$17.99$", star: 4.7, style: "History", image: Image("Show Me a Story!"))
+    Home(title: "Good Energy", author: "Casey Means MD", price: "$31.97$", star: 4.5, style: "Personal Growth", image: Image("GoodEnergy")),
+    Home(title: "It Starts With Us", author: "Colleen Hoover", price: "$35.74", star: 4.4, style: "Romance", image: Image("ItStartsWithUs")),
+    Home(title: "1984", author: "George Orwell", price: "$9.99$", star: 4.6, style: "Dystopian, Science Fiction", image: Image("1984")),
+    Home(title: "Of Mice and Men", author: "John Steinbeck", price: "$4.99", star: 4.6, style: "Tragedy", image: Image("OfMiceAndMen")),
+    Home(title: "Calm the Chaos", author: "Angela Wade", price: "$16.99$", star: 4.3, style: "Personal Growth", image: Image("CalmTheChaos"))
 ]
 
 

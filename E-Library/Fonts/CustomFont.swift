@@ -31,7 +31,7 @@ struct CustomFont: ViewModifier {
         case .title2:
             return 24
         case .title3:
-            return 20
+            return 19
         case .body:
             return 17
         case .subheadline:

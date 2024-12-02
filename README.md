@@ -12,7 +12,11 @@ The sidebar design enables users to easily browse through categories, reading li
 ### Cell Design
 In the listing screens, a sleek and functional cell design is used for each book. The book’s title, author, cover image, and category information are clearly displayed, drawing attention with an intuitive layout.
 
-<video src="https://github.com/user-attachments/assets/7f4ac7a4-5d5c-497f-923a-8ae6ab410904" width="250" controls playbackRate="2"></video>
+<video src="https://github.com/user-attachments/assets/b61d2c47-a07f-4e33-8000-56eb5dedc4e1" width="250"></video>
+
+
+
+
 
 
 
